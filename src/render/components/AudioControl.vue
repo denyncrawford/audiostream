@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { useToast } from 'vue-toastification';
 import { toastOptions } from '@common/configs'
 import { useControlsStore } from '../stores/audio-controls';
+import audio from '../public/test.webm';
 
 const recorder = ref<MediaRecorder>(null)
 const stream = ref<MediaStream>(null)
@@ -12,20 +13,19 @@ const store = useControlsStore();
 const initMicrophoneStream = async () => {
   try {
     stream.value = await navigator.mediaDevices.getUserMedia({ audio: true });
-    recorder.value = new MediaRecorder(stream.value);
-    toast.success(recorder.value.mimeType, toastOptions);
+    recorder.value = new MediaRecorder(stream.value, {
+      mimeType: 'audio/webm'
+    });
+    recorder.value.ondataavailable = (e) => {
+      console.log(e.data);
+    };
+    recorder.value.start();
     store.isStarted = true;
   } catch (error) {
     store.isStarted = false;
     toast.error(error.message, toastOptions);
   }
 };
-
-watch(recorder, (recorder) => {
-  recorder.addEventListener('dataavailable', (e) => {
-    console.log(e.data);
-  });
-});
 
 const startRecording = async () => {
   initMicrophoneStream();
@@ -34,14 +34,17 @@ const startRecording = async () => {
 const stopRecording = async () => {
   store.isStarted = false;
   store.isBroadcasting = false;
+  recorder.value.stop();
 };
 
 const resumeRecording = async () => {
   store.isBroadcasting = true;
+  recorder.value.resume()
 };
 
 const pauseRecording = async () => {
   store.isBroadcasting = false;
+  recorder.value.pause();
 };
 
 </script>
