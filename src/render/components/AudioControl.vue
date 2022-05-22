@@ -3,7 +3,6 @@ import { ref, watch } from 'vue';
 import { useToast } from 'vue-toastification';
 import { toastOptions } from '@common/configs'
 import { useControlsStore } from '../stores/audio-controls';
-import audio from '../public/test.webm';
 
 const recorder = ref<MediaRecorder>(null)
 const stream = ref<MediaStream>(null)
