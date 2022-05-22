@@ -15,7 +15,7 @@ export const useSocketStore = defineStore('socket', {
     }
   },
   actions: {
-    emit: (event: string, data: any) => (state: ISocketState) => {
+    emit: (event: string, data?: Blob) => (state: ISocketState) => {
       if (state.socket) {
         state.socket.emit(event, data)
       }

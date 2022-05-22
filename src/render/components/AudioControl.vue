@@ -3,12 +3,13 @@ import { ref, watch } from 'vue';
 import { useToast } from 'vue-toastification';
 import { toastOptions } from '@common/configs'
 import { useControlsStore } from '../stores/audio-controls';
-import audio from '../public/test.webm';
+import { useSocketStore } from '@render/stores/socket';
 
 const recorder = ref<MediaRecorder>(null)
 const stream = ref<MediaStream>(null)
 const toast = useToast()
 const store = useControlsStore();
+const socketStore = useSocketStore();
 
 const initMicrophoneStream = async () => {
   try {
@@ -17,7 +18,7 @@ const initMicrophoneStream = async () => {
       mimeType: 'audio/webm'
     });
     recorder.value.ondataavailable = (e) => {
-      console.log(e.data);
+      socketStore.emit('packet', e.data);
     };
     recorder.value.start();
     store.isStarted = true;
@@ -35,6 +36,7 @@ const stopRecording = async () => {
   store.isStarted = false;
   store.isBroadcasting = false;
   recorder.value.stop();
+  socketStore.emit('stop');
 };
 
 const resumeRecording = async () => {
