@@ -15,13 +15,11 @@ const initMicrophoneStream = async () => {
   try {
     stream.value = await navigator.mediaDevices.getUserMedia({ audio: true });
     recorder.value = new MediaRecorder(stream.value, {
-      mimeType: 'audio/webm;codecs=opus',
+      mimeType: 'audio/webm',
       audioBitsPerSecond: 128000,
     });
     recorder.value.addEventListener('dataavailable', async (e) => {
-      const buffer = await new Response(e.data).arrayBuffer();
-      console.log(buffer);
-      socketStore.socket.emit('packet', buffer);
+      socketStore.socket.emit('packet', e.data);
     });
     recorder.value.start(1000);
     store.isStarted = true;
@@ -40,7 +38,7 @@ const stopRecording = async () => {
   store.isStarted = false;
   store.isBroadcasting = false;
   recorder.value.stop();
-  socketStore.emit('stop');
+  socketStore.socket.emit('end');
 };
 
 const resumeRecording = async () => {
