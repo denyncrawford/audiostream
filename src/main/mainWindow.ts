@@ -9,7 +9,7 @@ export async function createWindow() {
     width: 1000,
     height: 800,
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true,
       preload: join(__dirname, '../preload/index.js'),
       // devTools: isDev,

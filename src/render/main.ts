@@ -10,12 +10,22 @@ import {
   BiPlayFill,
   BiRecordCircle,
   BiStopFill,
+  HiSelector,
   RiLoader2Fill,
+  HiCheck
 } from "oh-vue-icons/icons";
 import "animate.css";
 import "./index.css";
 
-addIcons(RiLoader2Fill, BiRecordCircle, BiPlayFill, BiStopFill, BiPauseFill);
+addIcons(
+  RiLoader2Fill,
+  BiRecordCircle,
+  BiPlayFill,
+  BiStopFill,
+  BiPauseFill,
+  HiSelector,
+  HiCheck 
+);
 
 const app = createApp(App);
 
@@ -24,7 +34,7 @@ app.use(createPinia());
 app.use(Toast, {
   transition: "Vue-Toastification__fade",
   maxToasts: 4,
-  newestOnTop: false
-})
+  newestOnTop: false,
+});
 app.component("Icon", OhVueIcon);
 app.mount("#app");

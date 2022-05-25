@@ -19,10 +19,13 @@
   "dependencies": {
     "@dpxmaximus/socket-stream": "^0.2.0",
     "@headlessui/vue": "^1.6.2",
+    "ajv": "^8.11.0",
     "animate.css": "^4.1.1",
     "axios": "^0.27.2",
     "bytenode": "^1.3.6",
+    "electron-store": "^8.0.1",
     "microphone-stream": "^6.0.1",
+    "nanoid": "^3.3.4",
     "oh-vue-icons": "1.0.0-rc3",
     "pinia": "^2.0.14",
     "reflect-metadata": "^0.1.13",
