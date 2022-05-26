@@ -10,5 +10,8 @@
     "outfile",
     "postuninstall",
     "vitest"
-  ]
+  ],
+  "files.associations": {
+    "*.css": "postcss",
+  },
 }

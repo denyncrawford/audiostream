@@ -105,7 +105,7 @@ watch(() => socketStore.socket, (socket) => {
   </div>
 </template>
 
-<style>
+<style lang="postcss">
 .common-button {
   @apply p-2 px-3 rounded-md bg-indigo-500 text-white hover:shadow-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed;
 }
