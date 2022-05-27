@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ref, provide, watch } from 'vue';
+import { ref, provide, watch, onMounted } from 'vue';
 import { useSocketStore } from '../stores/socket';
 import { useControlsStore } from '../stores/audio-controls';
+import { useConfigStore } from '../stores/config';
 import { DisconnectMessages, DisconnectReasons } from '@render/common.type'
 import { useToast } from "vue-toastification";
 import ConnectHandlerVue from '../components/ConnectHandler.vue';
@@ -11,6 +12,7 @@ import { toastOptions } from '@common/configs'
 
 const store = useSocketStore();
 const controlsStore = useControlsStore();
+const configStore = useConfigStore();
 const serverUrl = ref('');
 const broadcastId = ref('');
 
@@ -117,6 +119,10 @@ watch(showAudioControls, async (isShowing) => {
 
 provide('serverUrl', serverUrl);
 provide('broadcastId', broadcastId);
+
+onMounted(async () => {
+  await configStore.setAvaliableDevices();
+})
 
 </script>
 <template>

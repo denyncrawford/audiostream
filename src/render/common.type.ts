@@ -20,4 +20,6 @@ export interface IConfigState {
   broadcastIdHistory: string[];
   lastBroadcastId: string | null;
   lastServer: string | null;
+  availableDevices: MediaDeviceInfo[];
+  selectedDevice: MediaDeviceInfo['deviceId'];
 }

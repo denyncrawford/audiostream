@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useToast } from 'vue-toastification';
 import { toastOptions } from '@common/configs'
 import { useControlsStore } from '../stores/audio-controls';
 import { useSocketStore } from '@render/stores/socket';
+import { useConfigStore } from '@render/stores/config';
+import SelectVue from './Select.vue';
 
 const emit = defineEmits(['disconnectSocket']);
 
@@ -12,6 +14,12 @@ const stream = ref<MediaStream>()
 const toast = useToast()
 const store = useControlsStore();
 const socketStore = useSocketStore();
+const configStore = useConfigStore();
+
+const availableDevices = computed(() => configStore.availableDevices.map(device => ({
+  value: device.deviceId,
+  label: device.label,
+})))
 
 const initMicrophoneStream = async () => {
   try {
@@ -98,6 +106,7 @@ watch(() => socketStore.socket, (socket) => {
         </button>
       </div>
     </div>
+    <SelectVue placeholder="Seleccionar un dispositivo" v-model="configStore.selectedDevice" :filters="availableDevices" />
     <button class="mt-5 transition hover:shadow-lg w-full 
       bg-indigo-500 rounded-md text-white
       px-5 py-2" @click="disconnect">Desconectar del

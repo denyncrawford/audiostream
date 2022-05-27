@@ -1,6 +1,6 @@
 
 <script lang="ts" setup>
-import { inject, Ref } from 'vue';
+import { computed, inject, Ref } from 'vue';
 import { useConfigStore } from '@render/stores/config';
 import { nanoid } from 'nanoid';
 import SelectVue from './Select.vue';
@@ -48,6 +48,18 @@ const saveBroadcastIdHistory = () => {
   configStore.persistData();
 };
 
+const idHistoryToFilter = computed(() => configStore.broadcastIdHistory.map((id: string) => ({
+  value: id,
+  label: id,
+}))
+);
+
+const serverHistoryToFilter = computed(() => configStore.serverHistory.map((server: string) => ({
+  value: server,
+  label: server,
+}))
+);
+
 const connect = () => {
   if (!broadcastId.value) broadcastId.value = nanoid();
   saveServerHistory();
@@ -63,10 +75,10 @@ const connect = () => {
       Conexión con el servidor
     </h1>
     <div class="bg-gray-200 p-5 rounded-lg flex flex-col mt-5">
-      <SelectVue :filters="configStore.serverHistory" class="w-96 text-center"
-        v-model="serverUrl" type="text" placeholder="Introduce la dirección del servidor" />
-      <SelectVue :filters="configStore.broadcastIdHistory" class="w-96 mt-2 text-center"
-        v-model="broadcastId" type="text" placeholder="Introduce la identificación del stream" />
+      <SelectVue combobox :filters="serverHistoryToFilter" class="w-96 text-center" v-model="serverUrl" type="text"
+        placeholder="Introduce la dirección del servidor" />
+      <SelectVue combobox :filters="idHistoryToFilter" class="w-96 mt-2 text-center" v-model="broadcastId"
+        type="text" placeholder="Introduce la identificación del stream" />
       <button class="mt-5 transition hover:shadow-lg bg-indigo-500 rounded-md text-white px-5 py-2"
         @click="connect">Conectar</button>
     </div>
