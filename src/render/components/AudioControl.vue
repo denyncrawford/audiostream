@@ -180,7 +180,7 @@ watch(() => socketStore.socket, (socket) => {
       <div class="flex w-full mt-5 justify-center">
         <div class="h-full px-2 flex items-center">
           <p class="font-bold h-full font-mono text-xs text-gray-400 hover:text-indigo-500 cursor-pointer">
-            {{ serverUrl }}/{{ broadcastId }}
+            {{ serverUrl }}/stream/{{ broadcastId }}
           </p>
         </div>
       </div>
