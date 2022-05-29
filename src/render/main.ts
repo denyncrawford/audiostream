@@ -1,21 +1,22 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import { router } from "./routes";
-import { createPinia } from "pinia";
-import { addIcons, OhVueIcon } from "oh-vue-icons";
-import Toast from "vue-toastification";
-import "vue-toastification/dist/index.css";
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import { OhVueIcon, addIcons } from 'oh-vue-icons'
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
 import {
   BiPauseFill,
   BiPlayFill,
   BiRecordCircle,
   BiStopFill,
+  HiCheck,
   HiSelector,
+  HiSolidCog,
   RiLoader2Fill,
-  HiCheck
-} from "oh-vue-icons/icons";
-import "animate.css";
-import "./index.css";
+} from 'oh-vue-icons/icons'
+import App from './App.vue'
+import { router } from './routes'
+import 'animate.css'
+import './index.css'
 
 addIcons(
   RiLoader2Fill,
@@ -24,17 +25,18 @@ addIcons(
   BiStopFill,
   BiPauseFill,
   HiSelector,
-  HiCheck 
-);
+  HiCheck,
+  HiSolidCog,
+)
 
-const app = createApp(App);
+const app = createApp(App)
 
-app.use(router);
-app.use(createPinia());
+app.use(router)
+app.use(createPinia())
 app.use(Toast, {
-  transition: "Vue-Toastification__fade",
+  transition: 'Vue-Toastification__fade',
   maxToasts: 4,
   newestOnTop: false,
-});
-app.component("Icon", OhVueIcon);
-app.mount("#app");
+})
+app.component('Icon', OhVueIcon)
+app.mount('#app')

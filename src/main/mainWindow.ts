@@ -14,7 +14,7 @@ export async function createWindow() {
       preload: join(__dirname, '../preload/index.js'),
       // devTools: isDev,
     },
-    autoHideMenuBar: /*!isDev*/ true,
+    autoHideMenuBar: /*! isDev */ true,
   })
 
   // win.maximize()
@@ -25,7 +25,7 @@ export async function createWindow() {
     ? process.env.DEV_SERVER_URL
     : `file://${join(app.getAppPath(), 'dist/render/index.html')}`
 
-  win.loadURL(URL)
+  win.loadURL(URL as string)
 
   // if (isDev)
   //   win.webContents.openDevTools()

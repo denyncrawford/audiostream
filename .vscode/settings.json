@@ -1,17 +1,28 @@
 {
   "cSpell.words": [
     "anatine",
+    "antfu",
     "bytenode",
     "deine",
+    "dpxmaximus",
+    "esbuild",
+    "headlessui",
     "kolorist",
     "middlewares",
     "nsis",
     "outdir",
     "outfile",
+    "pinia",
+    "pnpm",
     "postuninstall",
+    "tailwindcss",
+    "toastification",
+    "vite",
+    "Vite",
+    "vitejs",
     "vitest"
   ],
   "files.associations": {
-    "*.css": "postcss",
-  },
+    "*.css": "postcss"
+  }
 }

@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { app } from 'electron'
+import { OpenDialogOptions, app, dialog, ipcMain } from 'electron'
 import { createWindow, restoreOrCreateWindow } from './mainWindow'
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
@@ -21,6 +21,9 @@ app.on('activate', async () => {
 app.on('ready', async () => {
   try {
     await createWindow()
+    ipcMain.handle('openDialog', async (_event, options: OpenDialogOptions) => {
+      return await dialog.showOpenDialog(options)
+    })
   }
   catch (error) {
     app.quit()
