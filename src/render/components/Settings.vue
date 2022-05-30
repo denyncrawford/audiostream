@@ -64,7 +64,7 @@ const availableDevices = computed(() => store.availableDevices.map(device => ({
 
 const defaultState = {
   audio: {
-    bitRate: '320000',
+    bitRate: '128000',
     sampleRate: '44100',
     selectedDevice: 'default',
   },

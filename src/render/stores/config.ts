@@ -10,7 +10,7 @@ export const useConfigStore = defineStore('config', {
       lastServer: null,
       availableDevices: [],
       audio: {
-        bitRate: '128',
+        bitRate: '128000',
         sampleRate: '44100',
         selectedDevice: '',
       },

@@ -35,10 +35,14 @@ const filteredData = computed(() =>
 )
 
 const selectedFilter = ref<IFilter>(
-  filters.value.find(i => i.value === modelValue.value)
+  filters.value.find(i => i.value === modelValue.value || i.label === modelValue.value)
   || filters.value[0]
   || { label: '', value: '' },
 )
+
+const formattedComboFill = computed(() => (
+  { label: query.value, value: query.value }
+))
 
 watch(selectedFilter, (filter: IFilter) => {
   if (filter)
@@ -80,7 +84,7 @@ onMounted(() => {
               No se encontraron valores.
             </div>
 
-            <ComboboxOption v-if="query.length > 0 && combobox" :value="{ label: query, value: query }">
+            <ComboboxOption v-if="query.length > 0 && combobox" :value="formattedComboFill">
               <li class="relative cursor-default select-none py-2 pl-10 pr-4 bg-indigo-500 text-white">
                 <span class="block truncate font_normal">
                   Usar valor: "{{ query }}"
@@ -92,8 +96,8 @@ onMounted(() => {
             </ComboboxOption>
 
             <ComboboxOption
-              v-for="filter in filteredData" :key="filter.value" v-slot="{ selected, active }" as="template"
-              :value="filter"
+              v-for="filter in filteredData" :key="filter.value" v-slot="{ selected, active }"
+              as="template" :value="filter"
             >
               <li
                 class="relative cursor-default select-none py-2 pl-10 pr-4" :class="{
