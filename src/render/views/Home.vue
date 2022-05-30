@@ -66,6 +66,7 @@ const connectSocket = async () => {
           showConnecHandler.value = true
           showAudioControls.value = false
           break
+        case DisconnectReasons.TRANSPORT_ERROR:
         case DisconnectReasons.LOST_CONNECTION:
           isLoading.value = true
           controlsStore.disabledBroadcast = true

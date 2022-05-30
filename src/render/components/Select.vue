@@ -80,7 +80,7 @@ onMounted(() => {
               No se encontraron valores.
             </div>
 
-            <ComboboxOption v-if="query.length > 0 && combobox" :value="query">
+            <ComboboxOption v-if="query.length > 0 && combobox" :value="{ label: query, value: query }">
               <li class="relative cursor-default select-none py-2 pl-10 pr-4 bg-indigo-500 text-white">
                 <span class="block truncate font_normal">
                   Usar valor: "{{ query }}"

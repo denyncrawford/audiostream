@@ -7,6 +7,7 @@ import { useSocketStore } from '@render/stores/socket'
 import { useConfigStore } from '@render/stores/config'
 import { useControlsStore } from '../stores/audio-controls'
 import VolumeMeterVue from './VolumeMeter.vue'
+import TooltipVue from './Tooltip.vue'
 
 const emit = defineEmits(['disconnectSocket'])
 
@@ -22,7 +23,7 @@ const socketStore = useSocketStore()
 const configStore = useConfigStore()
 const volume = ref(0)
 
-const timer = ref<number>(7199)
+const timer = ref<number>(0)
 const timerInterval = ref()
 
 const timeSecondsToHuman = computed(() => {
@@ -122,6 +123,11 @@ const disconnect = () => {
   emit('disconnectSocket')
 }
 
+const copyLink = async () => {
+  await navigator.clipboard.writeText(`${serverUrl.value}/stream/${broadcastId.value}`)
+  toast.success('Link de reproducción copiado al portapapeles', toastOptions)
+}
+
 watch(() => store.disabledBroadcast, (disabled) => {
   if (!disabled)
     startRecording()
@@ -140,27 +146,59 @@ watch(() => socketStore.socket, (socket) => {
     </h1>
     <div class="bg-gray-200 p-5 rounded-lg mt-5 flex flex-col">
       <div class="grid grid-cols-5 gap-2 bg-white p-5 rounded-md">
-        <button
-          :disabled="store.isBroadcasting || !store.isStarted || store.disabledBroadcast" class="common-button col-span-2"
-          @click="resumeRecording"
-        >
-          <Icon name="bi-play-fill" />
-        </button>
-        <button
-          :disabled="!store.isBroadcasting || !store.isStarted || store.disabledBroadcast" class="common-button"
-          @click="pauseRecording"
-        >
-          <Icon name="bi-pause-fill" />
-        </button>
-        <button :disabled="!store.isStarted || store.disabledBroadcast" class="common-button" @click="stopRecording">
-          <Icon name="bi-stop-fill" />
-        </button>
-        <button
-          :disabled="store.isStarted || store.disabledBroadcast" class="p-2 px-3 rounded-md bg-red-600 text-white disabled:bg-gray-400 disabled:cursor-not-allowed"
-          @click="startRecording"
-        >
-          <Icon name="bi-record-circle" />
-        </button>
+        <TooltipVue class="col-span-2" color="dark" position="top">
+          <template #content>
+            <p>
+              Reanudar transmisión
+            </p>
+          </template>
+          <button
+            :disabled="store.isBroadcasting || !store.isStarted || store.disabledBroadcast"
+            class="common-button w-full" @click="resumeRecording"
+          >
+            <Icon name="bi-play-fill" />
+          </button>
+        </TooltipVue>
+        <TooltipVue color="dark" position="top">
+          <template #content>
+            <p>
+              Pausar transmisión
+            </p>
+          </template>
+          <button
+            :disabled="!store.isBroadcasting || !store.isStarted || store.disabledBroadcast"
+            class="common-button w-full" @click="pauseRecording"
+          >
+            <Icon name="bi-pause-fill" />
+          </button>
+        </TooltipVue>
+        <TooltipVue color="dark" position="top">
+          <template #content>
+            <p>
+              Detener transmisión
+            </p>
+          </template>
+          <button
+            :disabled="!store.isStarted || store.disabledBroadcast" class="common-button w-full"
+            @click="stopRecording"
+          >
+            <Icon name="bi-stop-fill" />
+          </button>
+        </TooltipVue>
+        <TooltipVue color="dark" position="top">
+          <template #content>
+            <p>
+              Desconectar transmisión
+            </p>
+          </template>
+          <button
+            :disabled="store.isStarted || store.disabledBroadcast"
+            class="p-2 px-3 rounded-md bg-red-600 text-white disabled:bg-gray-400 disabled:cursor-not-allowed w-full"
+            @click="startRecording"
+          >
+            <Icon name="bi-record-circle" />
+          </button>
+        </TooltipVue>
       </div>
     </div>
     <div v-if="store.isStarted">
@@ -179,7 +217,7 @@ watch(() => socketStore.socket, (socket) => {
       </div>
       <div class="flex w-full mt-5 justify-center">
         <div class="h-full px-2 flex items-center">
-          <p class="font-bold h-full font-mono text-xs text-gray-400 hover:text-indigo-500 cursor-pointer">
+          <p class="font-bold h-full font-mono text-xs text-gray-400 hover:text-indigo-500 cursor-pointer" @click="copyLink">
             {{ serverUrl }}/stream/{{ broadcastId }}
           </p>
         </div>
@@ -201,6 +239,6 @@ watch(() => socketStore.socket, (socket) => {
 
 <style lang="postcss">
 .common-button {
-  @apply p-2 px-3 rounded-md bg-indigo-500 text-white hover:shadow-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed;
+  @apply p-2 px-3 rounded-md bg-indigo-500 text-white group-hover:shadow-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed;
 }
 </style>

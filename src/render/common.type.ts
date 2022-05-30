@@ -1,5 +1,6 @@
 export enum DisconnectReasons {
   LOST_CONNECTION = 'transport close',
+  TRANSPORT_ERROR = 'transport error',
   SERVER_DISCONNECT = 'io server disconnect',
   CLIENT_DISCONNECT = 'io client disconnect',
   ROOM_ALREADY_EXISTS = 'ROOM_ALREADY_EXISTS',

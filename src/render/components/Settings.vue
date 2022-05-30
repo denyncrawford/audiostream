@@ -6,11 +6,13 @@ import type { IFilter } from '@render/common.type'
 import type { OpenDialogOptions } from 'electron'
 import { Switch, Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import { useConfigStore, useConfigStoreController } from '@render/stores/config'
+import { useControlsStore } from '@render/stores/audio-controls'
 import DialogVue from './Dialog.vue'
 import SelectVue from './Select.vue'
 
 const store = useConfigStore()
 const controller = useConfigStoreController()
+const audioControlsStore = useControlsStore()
 const toast = useToast()
 
 const supportedBitRates: IFilter[] = [
@@ -241,13 +243,22 @@ onMounted(() => {
         </TabPanels>
       </TabGroup>
       <template #footer>
-        <div class="flex justify-end">
-          <button class="bg-gray-200 text-gray-600 px-4 py-2 rounded-lg" @click="cancel">
-            Cancelar
-          </button>
-          <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg ml-2" @click="save">
-            Guardar
-          </button>
+        <div class="text-center">
+          <p v-show="audioControlsStore.isStarted" class="text-red-500 mb-5 text-xs">
+            No se pueden actulizar estos datos mientras la transmisión esté activa.
+          </p>
+          <div class="flex justify-end">
+            <button class="bg-gray-200 text-gray-600 px-4 py-2 rounded-lg" @click="cancel">
+              Cancelar
+            </button>
+            <button
+              :disabled="audioControlsStore.isStarted"
+              class="bg-indigo-500 text-white px-4 py-2 rounded-lg ml-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              @click="save"
+            >
+              Guardar
+            </button>
+          </div>
         </div>
       </template>
     </DialogVue>
