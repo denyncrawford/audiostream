@@ -6,8 +6,8 @@ const isDev = !app.isPackaged
 
 export async function createWindow() {
   const win = new BrowserWindow({
-    width: 1000,
-    height: 800,
+    width: 755,
+    height: 700,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,

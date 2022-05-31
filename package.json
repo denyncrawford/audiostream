@@ -1,8 +1,9 @@
 {
-  "name": "fast-vite-electron",
+  "name": "cast-labs",
   "version": "0.0.1",
   "packageManager": "pnpm@7.1.0",
-  "description": "Vite + Electron with esbuild, so fast! ⚡",
+  "description": "CastLab Protocol Client",
+  "author": "CastLabs",
   "main": "dist/main/index.js",
   "scripts": {
     "dev": "rimraf dist && vite --force",
