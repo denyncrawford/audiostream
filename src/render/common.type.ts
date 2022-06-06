@@ -5,7 +5,8 @@ export enum DisconnectReasons {
   CLIENT_DISCONNECT = 'io client disconnect',
   ROOM_ALREADY_EXISTS = 'ROOM_ALREADY_EXISTS',
   NO_ROOM_ID = 'NO_ROOM_ID',
-  CANOT_CONNECT_TO_SERVER = 'CANOT_CONNECT_TO_SERVER',
+  CANNOT_CONNECT_TO_SERVER = 'CANNOT_CONNECT_TO_SERVER',
+  SERVER_ERROR = 'INTERNAL_ERROR',
 }
 
 export enum DisconnectMessages {
@@ -14,6 +15,7 @@ export enum DisconnectMessages {
   CLIENT_DISCONNECT = 'Se perdió la conexión con el servidor, reconectando...',
   ROOM_ALREADY_EXISTS = 'Este nombre de transmisión ya está en uso',
   NO_ROOM_ID = 'Por favor, especifica un nombre de transmisión',
+  SERVER_ERROR = 'Error interno del servidor',
 }
 
 export interface IConfigState {

@@ -17,6 +17,18 @@ const config = {
     'dist/preload/**/*',
     'dist/render/**/*',
   ],
+  win: {
+    target: [
+      {
+        target: 'nsis',
+        arch: [
+          'x64',
+          'ia32',
+        ],
+
+      },
+    ],
+  },
   nsis: {
     oneClick: false,
     allowElevation: true,

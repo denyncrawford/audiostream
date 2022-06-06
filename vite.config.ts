@@ -1,9 +1,9 @@
 /// <reference types="vitest" />
 import { join } from 'path'
-import { writeFileSync } from 'fs'
+// import { writeFileSync } from 'fs'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { compileFile } from 'bytenode'
+// import { compileFile } from 'bytenode'
 import { VitePluginElectronBuilder } from './plugin'
 
 // https://vitejs.dev/config/
@@ -17,13 +17,13 @@ export default defineConfig({
       tsconfig: './tsconfig.main.json',
       electronBuilderConfig: './electron-builder.config.js',
       afterEsbuildBuild: async () => {
-        await compileFile({
-          filename: './dist/main/index.js',
-          output: './dist/main/main.jsc',
-          electron: true,
-        })
+        // await compileFile({
+        //   filename: './dist/main/index.js',
+        //   output: './dist/main/main.jsc',
+        //   electron: true,
+        // })
 
-        writeFileSync('./dist/main/index.js', 'require(\'bytenode\');require(\'./main.jsc\')')
+        // writeFileSync('./dist/main/index.js', 'require(\'./main.js\')')
       },
     }),
   ],

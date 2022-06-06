@@ -11,13 +11,14 @@ import TooltipVue from './Tooltip.vue'
 
 const emit = defineEmits(['disconnectSocket'])
 
-const recorder = ref<MediaRecorder>()
-const stream = ref<MediaStream>()
+const recorder = ref<MediaRecorder | null>()
+const stream = ref<MediaStream | null>()
 const toast = useToast()
 const store = useControlsStore()
 
 const serverUrl = inject('serverUrl') as Ref<string>
 const broadcastId = inject('broadcastId') as Ref<string>
+const isReconnect = inject('isReconnect') as Ref<boolean>
 
 const socketStore = useSocketStore()
 const configStore = useConfigStore()
@@ -68,7 +69,10 @@ const initMicrophoneStream = async () => {
     })
     recorder.value.addEventListener('dataavailable', async (e) => {
       if (isFirstTime) {
-        socketStore.socket!.emit('header', e.data)
+        socketStore.socket!.emit('header', {
+          packet: e.data,
+          isReconnect: isReconnect.value,
+        })
         isFirstTime = false
       }
       socketStore.socket!.emit('packet', e.data)
@@ -84,23 +88,25 @@ const initMicrophoneStream = async () => {
   }
 }
 
+const stopRecording = async () => {
+  store.isStarted = false
+  store.isBroadcasting = false
+  recorder.value?.stop()
+  stream.value?.getTracks().forEach(track => track.stop())
+  stream.value = null
+  recorder.value = null
+  clearInterval(timerInterval.value)
+  timer.value = 0
+  socketStore.socket!.emit('end')
+}
+
 const startRecording = async () => {
   if (timerInterval.value)
     clearInterval(timerInterval.value)
   timerInterval.value = setInterval(() => {
     timer.value++
   }, 1000)
-  initMicrophoneStream()
-}
-
-const stopRecording = async () => {
-  store.isStarted = false
-  store.isBroadcasting = false
-  recorder.value?.stop()
-  stream.value?.getTracks().forEach(track => track.stop())
-  clearInterval(timerInterval.value)
-  timer.value = 0
-  socketStore.socket!.emit('end')
+  await initMicrophoneStream()
 }
 
 const resumeRecording = async () => {
@@ -131,11 +137,15 @@ const copyLink = async () => {
 watch(() => store.disabledBroadcast, (disabled) => {
   if (!disabled)
     startRecording()
+  else
+    stopRecording()
 })
 
 watch(() => socketStore.socket, (socket) => {
   if (!socket)
     stopRecording()
+  else
+    startRecording()
 })
 </script>
 

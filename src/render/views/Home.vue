@@ -6,7 +6,7 @@ import io from 'socket.io-client'
 import { toastOptions } from '@common/configs'
 import { useSocketStore } from '../stores/socket'
 import { useControlsStore } from '../stores/audio-controls'
-import { useConfigStore, useConfigStoreController } from '../stores/config'
+import { useConfigStore } from '../stores/config'
 import ConnectHandlerVue from '../components/ConnectHandler.vue'
 import AudioControlVue from '../components/AudioControl.vue'
 
@@ -20,6 +20,7 @@ const showConnecHandler = ref(true)
 const isShowingConnectHandler = ref(true)
 
 const isLoading = ref(false)
+const isReconnect = ref(false)
 const isLoadingTransitionDelay = ref(false)
 const showAudioControls = ref(false)
 const isShowingAudioControls = ref(false)
@@ -50,10 +51,16 @@ const connectSocket = async () => {
       toast.success('Conectado con el servidor', toastOptions)
     })
     store.socket.on('close_reason', (reason: keyof typeof DisconnectReasons) => {
-      if (reason in DisconnectReasons)
+      if (reason in DisconnectReasons) {
         toast.error(DisconnectMessages[reason], toastOptions)
+        isLoading.value = false
+        showConnecHandler.value = true
+        showAudioControls.value = false
+        isReconnect.value = false
+      }
     })
     store.socket.on('disconnect', async (reason) => {
+      isReconnect.value = true
       switch (reason) {
         case DisconnectReasons.SERVER_DISCONNECT:
           isLoading.value = false
@@ -65,6 +72,7 @@ const connectSocket = async () => {
           isLoading.value = false
           showConnecHandler.value = true
           showAudioControls.value = false
+          isReconnect.value = false
           break
         case DisconnectReasons.TRANSPORT_ERROR:
         case DisconnectReasons.LOST_CONNECTION:
@@ -90,6 +98,7 @@ const disconnectSocket = async () => {
     showAudioControls.value = false
     showConnecHandler.value = true
     isLoading.value = false
+    isReconnect.value = false
     toast.success('Desconectado del servidor', toastOptions)
   }
 }
@@ -121,6 +130,7 @@ watch(showAudioControls, async (isShowing) => {
 
 provide('serverUrl', serverUrl)
 provide('broadcastId', broadcastId)
+provide('isReconnect', isReconnect)
 
 onMounted(async () => {
   await configStore.setAvailableDevices()
